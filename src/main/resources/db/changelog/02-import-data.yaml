@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - preConditions:
+  - runningAs:
+      username: liquibase
+
+  - changeSet:
+      id: 2
+      author: knowakowski
+      changes:
+        - loadData:
+            columns:
+              - column:
+                  header: id
+                  name: id
+                  type: int
+              - column:
+                  header: title
+                  name: title
+                  type: string
+              - column:
+                  header: pages
+                  name: pages
+                  type: int
+            file: db/data/books.csv
+            separator: |
+            tableName: book
