@@ -1,6 +1,5 @@
 package com.example.application.repository;
 
-import com.example.application.entity.Author;
 import com.example.application.entity.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

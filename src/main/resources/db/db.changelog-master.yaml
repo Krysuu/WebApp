@@ -1,5 +1,11 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/01-create-books-and-author-schema.yaml
+      file: db/changelog/01-create-tables.yaml
   - include:
-      file: db/changelog/02-import-data.yaml
+      file: db/changelog/02-import-genre.yaml
+  - include:
+      file: db/changelog/03-import-author.yaml
+  - include:
+      file: db/changelog/04-import-book.yaml
+  - include:
+      file: db/changelog/05-import-book-genre.yaml

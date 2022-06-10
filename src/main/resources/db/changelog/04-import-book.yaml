@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - preConditions:
+  - runningAs:
+      username: liquibase
+
+  - changeSet:
+      id: 4
+      author: knowakowski
+      changes:
+        - loadData:
+            file: db/data/book.csv
+            tableName: book
