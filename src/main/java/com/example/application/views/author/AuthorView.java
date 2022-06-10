@@ -20,13 +20,14 @@ public class AuthorView extends HorizontalLayout {
 
     private final AuthorService authorService;
     private final BookService bookService;
-    private Optional<Author> selectedAuthor;
+    private Optional<Author> selectedAuthor = Optional.empty();
     private Grid<Author> authorGrid;
 
     public AuthorView(AuthorService authorService, BookService bookService) {
         this.bookService = bookService;
         this.authorService = authorService;
         initView();
+        setHeight(100, Unit.PERCENTAGE);
     }
 
     private void initView() {
@@ -78,6 +79,7 @@ public class AuthorView extends HorizontalLayout {
         var vertical = new VerticalLayout();
         vertical.add(buttons, authorGrid);
         add(leftMenu, vertical);
-        setHeight(100, Unit.PERCENTAGE);
+        leftMenu.setWidth(15, Unit.PERCENTAGE);
+        vertical.setWidth(85, Unit.PERCENTAGE);
     }
 }

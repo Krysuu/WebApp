@@ -20,15 +20,17 @@ import static com.example.application.views.util.Constant.*;
 public class BookView extends HorizontalLayout {
 
     private final BookService bookService;
-    private Book selectedBook;
+    private Optional<Book> selectedBook = Optional.empty();
     private Grid<Book> bookGrid;
 
     public BookView(BookService bookService) {
         this.bookService = bookService;
         initView();
+        setHeight(100, Unit.PERCENTAGE);
+        setWidth(100, Unit.PERCENTAGE);
     }
 
-    private void initView(){
+    private void initView() {
         var leftMenu = new LeftMenu();
         var createButton = new Button(ADD_BOOK);
         createButton.addClickListener(e ->
@@ -38,17 +40,17 @@ public class BookView extends HorizontalLayout {
 
         var updateButton = new Button(UPDATE_BOOK);
         updateButton.addClickListener(e -> {
-                    if (selectedBook != null) {
+                    if (selectedBook.isPresent()) {
                         updateButton.getUI().ifPresent(ui ->
-                                ui.navigate("book/edit/" + selectedBook.getId().toString()));
+                                ui.navigate("book/edit/" + selectedBook.get().getId().toString()));
                     }
                 }
         );
 
         var deleteButton = new Button(DELETE_BOOK);
         deleteButton.addClickListener(e -> {
-                    if (selectedBook != null) {
-                        bookService.delete(selectedBook);
+                    if (selectedBook.isPresent()) {
+                        bookService.delete(selectedBook.get());
                         bookGrid.setItems(bookService.findAll());
                     }
                 }
@@ -56,9 +58,9 @@ public class BookView extends HorizontalLayout {
 
         var showAuthorButton = new Button(SHOW_AUTHOR);
         showAuthorButton.addClickListener(e -> {
-                    if (selectedBook != null) {
+                    if (selectedBook.isPresent()) {
                         showAuthorButton.getUI().ifPresent(ui ->
-                                ui.navigate("author/info/" + selectedBook.getAuthor().getId().toString()));
+                                ui.navigate("author/info/" + selectedBook.get().getAuthor().getId().toString()));
                     }
                 }
         );
@@ -74,17 +76,14 @@ public class BookView extends HorizontalLayout {
                                 .collect(Collectors.joining(", "))))
                 .setHeader(GENRE_TEXT);
         bookGrid.setItems(bookService.findAll());
-
-        bookGrid.addSelectionListener(selection -> {
-            Optional<Book> selectedItem = selection.getFirstSelectedItem();
-            selectedItem.ifPresent(book -> selectedBook = book);
-        });
+        bookGrid.addSelectionListener(selection -> selectedBook = selection.getFirstSelectedItem());
 
         var buttons = new HorizontalLayout();
         buttons.add(createButton, updateButton, deleteButton, showAuthorButton);
         var vertical = new VerticalLayout();
         vertical.add(buttons, bookGrid);
         add(leftMenu, vertical);
-        setHeight(100, Unit.PERCENTAGE);
+        leftMenu.setWidth(15, Unit.PERCENTAGE);
+        vertical.setWidth(85, Unit.PERCENTAGE);
     }
 }

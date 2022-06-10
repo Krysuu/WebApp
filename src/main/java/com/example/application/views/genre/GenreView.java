@@ -18,12 +18,13 @@ import static com.example.application.views.util.Constant.*;
 public class GenreView extends HorizontalLayout {
 
     private final GenreService genreService;
-    private Optional<Genre> selectedGenre;
+    private Optional<Genre> selectedGenre = Optional.empty();
     private Grid<Genre> bookGrid;
 
     public GenreView(GenreService genreService) {
         this.genreService = genreService;
         initView();
+        setHeight(100, Unit.PERCENTAGE);
     }
 
     private void initView() {
@@ -63,6 +64,7 @@ public class GenreView extends HorizontalLayout {
         var vertical = new VerticalLayout();
         vertical.add(buttons, bookGrid);
         add(leftMenu, vertical);
-        setHeight(100, Unit.PERCENTAGE);
+        leftMenu.setWidth(15, Unit.PERCENTAGE);
+        vertical.setWidth(85, Unit.PERCENTAGE);
     }
 }

@@ -5,7 +5,9 @@ import com.example.application.entity.Book;
 import com.example.application.entity.Genre;
 import com.example.application.service.AuthorService;
 import com.example.application.service.BookService;
+import com.example.application.views.util.CommonComponent;
 import com.example.application.views.util.LeftMenu;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -35,12 +37,13 @@ public class AuthorEditView extends HorizontalLayout implements HasUrlParameter<
     private DatePicker birthField;
     private DatePicker deathField;
     private Grid<Book> bookGrid;
-    private Optional<Author> selectedAuthor;
+    private Optional<Author> selectedAuthor = Optional.empty();
 
     public AuthorEditView(AuthorService authorService, BookService bookService) {
         this.authorService = authorService;
         this.bookService = bookService;
         initView();
+        setHeight(100, Unit.PERCENTAGE);
     }
 
     private void initView() {
@@ -48,22 +51,7 @@ public class AuthorEditView extends HorizontalLayout implements HasUrlParameter<
         var formLayout = createFormLayout();
 
         var saveButton = new Button(SAVE_TEXT);
-        saveButton.addClickListener(e -> {
-            if (selectedAuthor.isPresent()) {
-                updateAuthor(selectedAuthor.get(),
-                        firstNameField.getValue(),
-                        lastNameField.getValue(),
-                        birthField.getValue(),
-                        deathField.getValue());
-            } else {
-                createNewAuthor(firstNameField.getValue(),
-                        lastNameField.getValue(),
-                        birthField.getValue(),
-                        deathField.getValue());
-            }
-            saveButton.getUI().ifPresent(ui ->
-                    ui.navigate("author"));
-        });
+        saveButton.addClickListener(e -> saveButtonAction(saveButton));
 
         var cancelButton = new Button(RETURN_TEXT);
         cancelButton.addClickListener(e ->
@@ -74,12 +62,15 @@ public class AuthorEditView extends HorizontalLayout implements HasUrlParameter<
         var buttons = new HorizontalLayout(saveButton, cancelButton);
         var authorEditView = new VerticalLayout(formLayout, buttons);
         add(leftMenu, authorEditView);
+        leftMenu.setWidth(15, Unit.PERCENTAGE);
+        authorEditView.setWidth(85, Unit.PERCENTAGE);
     }
 
     private FormLayout createFormLayout() {
         var form = new FormLayout();
 
         firstNameField = new TextField(FIRST_NAME_TEXT);
+        firstNameField.setRequired(true);
         lastNameField = new TextField(LAST_NAME_TEXT);
         birthField = new DatePicker(BIRTH_TEXT);
         deathField = new DatePicker(DEATH_TEXT);
@@ -128,5 +119,27 @@ public class AuthorEditView extends HorizontalLayout implements HasUrlParameter<
             selectedAuthor = authorService.findById(id);
             selectedAuthor.ifPresent(this::fillFields);
         }
+    }
+
+    private void saveButtonAction(Button saveButton) {
+        if (firstNameField.isEmpty()) {
+            CommonComponent.emptyFieldNotification(FIRST_NAME_TEXT).open();
+            return;
+        }
+
+        if (selectedAuthor.isPresent()) {
+            updateAuthor(selectedAuthor.get(),
+                    firstNameField.getValue(),
+                    lastNameField.getValue(),
+                    birthField.getValue(),
+                    deathField.getValue());
+        } else {
+            createNewAuthor(firstNameField.getValue(),
+                    lastNameField.getValue(),
+                    birthField.getValue(),
+                    deathField.getValue());
+        }
+        saveButton.getUI().ifPresent(ui ->
+                ui.navigate("author"));
     }
 }

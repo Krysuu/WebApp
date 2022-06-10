@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Constant {
+    //COMMON
+    public static final String EMPTY_FIELD_MESSAGE = "Pole \"%s\" nie może być puste.";
+
     //BOOKS
     public static final String TITLE_TEXT = "Tytuł";
     public static final String PAGES_TEXT = "Liczba stron";

@@ -17,3 +17,5 @@ Można również zaimportować projekt do wybranego IDE tak jak w przypadku inny
 - Baza danych H2 (w pamięci)
 - Liquibase (wersjonowanie bazy danych z możliwością przepięcia na dowolną inną bazę SQL)
 - Lombok
+
+## Autor - Krystian Nowakowski

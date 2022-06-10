@@ -6,6 +6,7 @@ import com.example.application.entity.Genre;
 import com.example.application.service.AuthorService;
 import com.example.application.service.BookService;
 import com.example.application.views.util.LeftMenu;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -33,12 +34,13 @@ public class AuthorInfoView extends HorizontalLayout implements HasUrlParameter<
     private DatePicker birthField;
     private DatePicker deathField;
     private Grid<Book> bookGrid;
-    private Optional<Author> selectedAuthor;
+    private Optional<Author> selectedAuthor = Optional.empty();
 
     public AuthorInfoView(AuthorService authorService, BookService bookService) {
         this.authorService = authorService;
         this.bookService = bookService;
         initView();
+        setHeight(100, Unit.PERCENTAGE);
     }
 
     private void initView() {
@@ -56,8 +58,10 @@ public class AuthorInfoView extends HorizontalLayout implements HasUrlParameter<
         );
 
         var buttonsLayout = new HorizontalLayout(editButton, cancelButton);
-        var authorEditView = new VerticalLayout(createFormLayout(), buttonsLayout);
-        add(leftMenu, authorEditView);
+        var authorInfoView = new VerticalLayout(createFormLayout(), buttonsLayout);
+        add(leftMenu, authorInfoView);
+        leftMenu.setWidth(15, Unit.PERCENTAGE);
+        authorInfoView.setWidth(85, Unit.PERCENTAGE);
     }
 
     private FormLayout createFormLayout() {
