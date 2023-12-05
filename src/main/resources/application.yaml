@@ -20,4 +20,4 @@ logging:
     org:
       atmosphere: warn
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8081}
